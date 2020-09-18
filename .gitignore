@@ -32,17 +32,14 @@
 *.app
 
 .vscode/
-
 auth.txt
-
 src/<PATH_TO_CREDENTIALS_FILE>
-
-src/data/__pycache__/
-
 src/geckodriver.log
-
 SECRET_STUFF
-
 src/test.txt
-
 src/userdata/
+__pycache__/
+src/backend/secrets/
+src/backend/static
+*.qfx
+*.db
