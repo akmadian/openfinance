@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import { Table, Typography, Col, Button } from 'antd'
+import { Table, Typography, Button } from 'antd'
+import { Row, Col } from 'antd'
 import StockNews from './StockNews'
+import TradingViewMarkets from './TradingViewMarkets'
 
 import BTCIcon from 'cryptocurrency-icons/svg/color/btc.svg'
 import ETHIcon from 'cryptocurrency-icons/svg/color/eth.svg'
@@ -30,99 +32,71 @@ export default class InvestingTab extends Component {
   render() {
     return (
       <div>
-        <Title level={3}>TD Ameritrade</Title>
-        <Table
-          dataSource={window.store.getState().TD.investing.positions} 
-          size="small"
-          pagination={false}
-        >
-          <Column title="Ticker" dataIndex="instrument" key="instrument"/>
-          <Column title="Quantity" dataIndex="quantity" key="instrument"/>
-          <Column title="Value" dataIndex="value" key="instrument"/>
-          <ColumnGroup title="P/L Day">
-            <Column title="$" dataIndex="pldayusd" key="instrument"
-              render={amount => (
-                <b style={
-                  { color: (amount) => {
-                    if (amount === 0) {
-                      return 'black'
-                    } else { return amount > 0 ? 'green': 'red' }
-                  }}
-                }>${amount}</b>
+        <Row>
+          <Col span={17}>
+          <Title level={3}>TD Ameritrade</Title>
+          <Table
+            dataSource={window.store.getState().TD.investing.positions} 
+            size="small"
+            pagination={false}
+            bordered
+          >
+            <Column title="Ticker" dataIndex="instrument" key="instrument"
+              render={ticker => (
+                <p>{ticker === "MMDA1" ? "Cash" : ticker}</p>
               )}
             />
-            <Column title="%" dataIndex="pldaypercent" key="instrument"
-              render={amount => (
-                <b style={
-                  { color: (amount) => {
-                    if (amount === 0) {
-                      return 'black'
-                    }
-                    else { return amount > 0 ? 'green': 'red' }
-                  }}
-                }>{amount}%</b>
+            <Column title="Quantity" dataIndex="quantity" key="instrument"/>
+            <Column title="Value" dataIndex="value" key="instrument"/>
+            <ColumnGroup title="P/L Day">
+              <Column title="$" dataIndex="pldayusd" key="instrument"
+                render={amount => (
+                  <b style={{ color: amount === 0 ? 'black' : amount > 0 ? 'green': 'red' }}>${amount}</b>
+                )}
+              />
+              <Column title="%" dataIndex="pldaypercent" key="instrument"
+                render={amount => (
+                  <b style={{ color: amount === 0 ? 'black' : amount > 0 ? 'green': 'red' }}>{amount}%</b>
+                )}
+              />
+            </ColumnGroup>
+            <Column title="News"
+              render={(__, position) => (
+                <span>
+                  <Button onClick={event => this.showNews(position.instrument)}>
+                    News & Sentiment
+                  </Button>
+                  <Button onClick={event => this.showNews(position.instrument)}>
+                    See Chart
+                  </Button>
+                </span>
               )}
             />
-          </ColumnGroup>
-          <Column title="News"
-            render={(__, position) => (
-              <Button onClick={event => this.showNews(position.instrument)}>
-                Fetch News
-              </Button>
-            )}
-          />
-        </Table>
-        <Table
-          dataSource={window.store.getState().TD.trading.positions} 
-          size="small"
-          pagination={false}
-        >
-          <Column title="Ticker" dataIndex="instrument" key="instrument"/>
-          <Column title="Quantity" dataIndex="quantity" key="instrument"/>
-          <Column title="Value" dataIndex="value" key="instrument"/>
-          <ColumnGroup title="P/L Day">
-            <Column title="$" dataIndex="pldayusd" key="instrument"
-              render={amount => (
-                <b style={
-                  { color: (amount) => {
-                    if (amount === 0) {
-                      return 'black'
-                    } else { return amount > 0 ? 'green': 'red' }
-                  }}
-                }>${amount}</b>
+          </Table>
+          <Title level={3}>Coinbase</Title>
+          <Table 
+            dataSource={window.store.getState().coinbase} 
+            size="small" 
+            pagination={false}
+          >
+            <Column title="Currency" dataIndex="coin"
+              render={coin => (
+                <span>
+                <img src={cryptoicons[coin]}/> {coin}
+                </span>
               )}
             />
-            <Column title="%" dataIndex="pldaypercent" key="instrument"
-              render={amount => (
-                <b style={
-                  { color: (amount) => {
-                    if (amount === 0) {
-                      return 'black'
-                    }
-                    else { return amount > 0 ? 'green': 'red' }
-                  }}
-                }>{amount}%</b>
-              )}
-            />
-          </ColumnGroup>
-        </Table>
-        <Title level={3}>Coinbase</Title>
-        <Table 
-          dataSource={window.store.getState().coinbase} 
-          size="small" 
-          pagination={false}
-        >
-          <Column title="Currency" dataIndex="coin"
-            render={coin => (
-              <span>
-              <img src={cryptoicons[coin]}/> {coin}
-              </span>
-            )}
-          />
-          <Column title="Quantity" dataIndex="coin_balance"/>
-          <Column title="Value" dataIndex="value"/>
-        </Table>
-        <StockNews ticker={this.state.newsTicker} visible={this.state.newsVisible}/>
+            <Column title="Quantity" dataIndex="coin_balance"/>
+            <Column title="Value" dataIndex="value"/>
+          </Table>
+          <StockNews ticker={this.state.newsTicker} visible={this.state.newsVisible}/>
+          </Col>
+          <Col span={6}>
+            <p>test</p>
+            <TradingViewMarkets/>
+          </Col>
+          <Col span={1}></Col>
+        </Row>
       </div>
     )
   }

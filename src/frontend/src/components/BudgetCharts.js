@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Bar } from 'react-chartjs-2'
+import { Typography } from 'antd'
 import Chart from 'chart.js'
 
+const { Title } = Typography
 var color = Chart.helpers.color
 
 const chartColors = {
@@ -31,6 +33,8 @@ export default class BudgetCharts extends Component {
     render() {
         return (
             <div>
+                <br/>
+                <Title level={5}>Spending in Current Period</Title>
                 <Bar 
                     data={{
                         labels: Object.keys(window.store.getState().budget_info).slice(-1),
