@@ -63,5 +63,13 @@ def gettransaction():
   transaction = TransactionsDB.fetch_transaction_by_id(request.args['id'])
   return json.dumps(transaction)
 
+@app.route("/posttransaction", methods=["POST"])
+def posttransaction():
+  TransactionsDB.open_connection()
+  TransactionsDB.write_transactions(
+    transaction=json.loads(request.data),
+    overwrite=True
+  )
+
 if __name__ == "__main__":
   app.run(debug=True)
