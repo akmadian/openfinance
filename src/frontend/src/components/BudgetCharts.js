@@ -109,6 +109,81 @@ export default class BudgetCharts extends Component {
                         }
                     }}
                 />
+                <Title level={5}>Spending in Current Month</Title>
+                <Bar 
+                    data={{
+                        labels: Object.keys(window.store.getState().budget_info).slice(-1),
+                        datasets: [
+                            {
+                                label: 'Disc/ Ess Amt',
+                                backgroundColor: color(chartColors.green).alpha(0.5).rgbString(),
+                                borderColor: chartColors.green,
+                                stack: '1',
+                                data: Object.keys(window.store.getState().budget_info).map(period => {
+                                    return window.store.getState().budget_info[period]['Disc/ Essentials'].period_total
+                                })
+                            },
+                            {
+                                label: 'Disc/ Ess Limit',
+                                backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
+                                borderColor: chartColors.red,
+                                stack: '1',
+                                data: Object.keys(window.store.getState().budget_info).map(period => {
+                                    return window.store.getState().budget_info[period]['Disc/ Essentials'].period_limit
+                                })
+                            },
+                            {
+                                label: 'Disc/ Fun Amt',
+                                backgroundColor: color(chartColors.green).alpha(0.5).rgbString(),
+                                borderColor: chartColors.green,
+                                stack: '2',
+                                data: Object.keys(window.store.getState().budget_info).map(period => {
+                                    return window.store.getState().budget_info[period]['Disc/ Fun Stuff'].period_total
+                                })
+                            },
+                            {
+                                label: 'Disc/ Fun Limit',
+                                backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
+                                borderColor: chartColors.red,
+                                stack: '2',
+                                data: Object.keys(window.store.getState().budget_info).map(period => {
+                                    return window.store.getState().budget_info[period]['Disc/ Fun Stuff'].period_limit
+                                })
+                            },
+                            {
+                                label: 'NDisc/ Groc Amt',
+                                backgroundColor: color(chartColors.green).alpha(0.5).rgbString(),
+                                borderColor: chartColors.green,
+                                stack: '3',
+                                data: Object.keys(window.store.getState().budget_info).map(period => {
+                                    return window.store.getState().budget_info[period]['Non-Disc/ Groceries'].period_total
+                                })
+                            },
+                            {
+                                label: 'NDisc/ Groc Limit',
+                                backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
+                                borderColor: chartColors.red,
+                                stack: '3',
+                                data: Object.keys(window.store.getState().budget_info).map(period => {
+                                    return window.store.getState().budget_info[period]['Non-Disc/ Groceries'].period_limit
+                                })
+                            }
+                        ]
+                    }}
+                    options={{
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            xAxes: [{
+                                stacked: true
+                            }],
+                            yAxes: [{
+                                stacked: true
+                            }]
+                        }
+                    }}
+                />
             </div>
         )
     }
